@@ -1,6 +1,7 @@
 # Encryption and Decryption of files and folders
 from cryptography.fernet import Fernet
 import os
+from tkinter import filedialog
 
 # # key generation
 # key = Fernet.generate_key()
@@ -15,7 +16,9 @@ with open("filekey.key", "rb") as filekey:
 
 # using the generated key
 fernet = Fernet(key)
-for dirname, subdirlist, filelist in os.walk("C:\D-sim\pyprojs\AI Images"):
+# Open a file dialog to select the directory
+directory = filedialog.askdirectory(title="Select Folder to Encrypt")
+for dirname, subdirlist, filelist in os.walk(directory):
     print(dirname)
     for filename in filelist:
         print(f"Encrypting {filename}...")
