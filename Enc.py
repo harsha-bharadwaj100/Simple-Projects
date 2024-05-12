@@ -1,5 +1,6 @@
 # Encryption and Decryption of files and folders
 from cryptography.fernet import Fernet
+import os
 
 # # key generation
 # key = Fernet.generate_key()
@@ -14,15 +15,20 @@ with open("filekey.key", "rb") as filekey:
 
 # using the generated key
 fernet = Fernet(key)
+for dirname, subdirlist, filelist in os.walk("C:\D-sim\pyprojs\AI Images"):
+    print(dirname)
+    for filename in filelist:
+        print(f"Encrypting {filename}...")
+        # opening the original file to encrypt
+        with open(dirname + "\\" + filename, "rb") as file:
+            original = file.read()
+        # delete originarl file
+        os.remove(dirname + "\\" + filename)
 
-# opening the original file to encrypt
-with open("image (1).png", "rb") as file:
-    original = file.read()
+        # encrypting the file
+        encrypted = fernet.encrypt(original)
 
-# encrypting the file
-encrypted = fernet.encrypt(original)
-
-# opening the file in write mode and
-# writing the encrypted data
-with open("image (1).png", "wb") as encrypted_file:
-    encrypted_file.write(encrypted)
+        # opening the file in write mode and
+        # writing the encrypted data
+        with open(dirname + "\\" + filename, "wb") as encrypted_file:
+            encrypted_file.write(encrypted)
