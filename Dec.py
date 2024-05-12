@@ -12,17 +12,17 @@ from cryptography.fernet import Fernet
 with open("filekey.key", "rb") as filekey:
     key = filekey.read()
 
-# using the generated key
+# using the key
 fernet = Fernet(key)
 
-# opening the original file to encrypt
-with open("image (1).png", "rb") as file:
-    original = file.read()
+# opening the encrypted file
+with open("image (1).png", "rb") as enc_file:
+    encrypted = enc_file.read()
 
-# encrypting the file
-encrypted = fernet.encrypt(original)
+# decrypting the file
+decrypted = fernet.decrypt(encrypted)
 
 # opening the file in write mode and
-# writing the encrypted data
-with open("image (1).png", "wb") as encrypted_file:
-    encrypted_file.write(encrypted)
+# writing the decrypted data
+with open("image (1).png", "wb") as dec_file:
+    dec_file.write(decrypted)
