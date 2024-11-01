@@ -43,6 +43,45 @@ def LRU(seq, n):
     return pagefaults, hits
 
 
+def OPT(seq, n):
+    pagefaults = []
+    hits = []
+    frame = [None] * n
+    pos = 0
+    opt = dict()
+    for i in range(len(seq)):
+        if seq[i] in opt:
+            opt[seq[i]].append(i)
+        else:
+            opt[seq[i]] = [i]
+    print(opt)
+    for i in range(len(seq)):
+        if seq[i] not in frame:
+            if None in frame:
+                frame[pos] = seq[i]
+                pos = pos + 1
+                # remove the first occurance of the element from opt
+            else:
+                # framefirstoccurance = [opt[x][0] for x in frame]
+                pos = frame.index(
+                    max(
+                        frame,
+                        key=lambda x: opt[x][0] if len(opt[x]) > 0 else len(seq) + 1,
+                    )
+                )
+                frame[pos] = seq[i]
+            del opt[seq[i]][0]
+            pagefaults.append(i)
+            print(frame, seq[i], "pagefault")
+            print(opt)
+        else:
+            hits.append(i)
+            del opt[seq[i]][0]
+            print(frame, seq[i], "hit")
+            print(opt)
+    return pagefaults, hits
+
+
 print(FIFO(sequence, fsize))
 print(LRU(sequence, fsize))
-# print(OPT(sequence, fsize))
+print(OPT(sequence, fsize))
